@@ -6,7 +6,7 @@ from dotenv import find_dotenv
 import hashlib, time
 import random
 
-path = r'C:\Users\jacob\VectorAPI\.env.txt' # sets path to .env file
+# path = placeholder sets path to .env file
 load_dotenv(dotenv_path=path, verbose=True) # loads .env file
 url = os.getenv("DATABASE_URL") # gets url from .env file
 app = Flask(__name__) #starts flask app
