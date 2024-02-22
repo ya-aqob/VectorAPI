@@ -6,6 +6,9 @@ from dotenv import find_dotenv
 import hashlib, time
 import random
 
+#notes and to-do list
+#leaderboard sorting
+
 # path = placeholder sets path to .env file
 load_dotenv(dotenv_path=path, verbose=True) # loads .env file
 url = os.getenv("DATABASE_URL") # gets url from .env file
@@ -20,6 +23,8 @@ INSERT_USER_LEADERBOARD = ("INSERT INTO leaderboard (id, points) VALUES (%d, %d)
 UPDATE_NEW_POINTS = "UPDATE leaderboard SET points = {%d} WHERE id = {%d}; " # adds points for given user
 FIND_USER_ID = "SELECT userid from userinfo WHERE username = {%s}" # grabs userid based on what username is
 SELECT_PASSWORD_VERIFICATION = "SELECT password, salt from userinfo WHERE userid = {%d}" # grabs saved hashed password and salt
+FIND_USER_POINTS = "SELECT points from leaderboard WHERE id = {%d}" #grabs points from leaderboard given an id
+
 recycleConstant = 2 # points per item recycled
 disposalConstant = 3 # points per item disposed
 
@@ -81,3 +86,17 @@ def login_verified():
         return {"verificationStatus": f"{userName} has successfully been verified."}
     else:
         return {"verificationStatus": f"User not successfully verified."}
+    
+@app.get("api/leaderboard/<str:userName>")
+def get_user_points(userName):
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(FIND_USER_ID, (userName))
+            userID = cursor.fetchall()
+            for row in userID:
+                userID = row[0]
+            cursor.execute(FIND_USER_POINTS, (userID))
+            points = cursor.fetchall()
+            for row in points:
+                userPoints = row[0]
+    return {"pointsStatus": f"{userName} has {userPoints} points."}
