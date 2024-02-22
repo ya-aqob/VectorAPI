@@ -23,9 +23,7 @@ INSERT_USER_LEADERBOARD = ("INSERT INTO leaderboard (id, points) VALUES (%d, %d)
 UPDATE_NEW_POINTS = "UPDATE leaderboard SET points = {%d} WHERE id = {%d}; " # adds points for given user
 FIND_USER_ID = "SELECT userid from userinfo WHERE username = {%s}" # grabs userid based on what username is
 SELECT_PASSWORD_VERIFICATION = "SELECT password, salt from userinfo WHERE userid = {%d}" # grabs saved hashed password and salt
-FIND_USER_POINTS = "SELECT points from leaderboard WHERE id = {%d}" #grabs points from leaderboard given an id
-
-recycleConstant = 2 # points per item recycled
+recycleConstant = 4 # points per item recycled
 disposalConstant = 3 # points per item disposed
 
 # creates user table and leaderboard table if none exists, adds new user with username and theoretically unique hashed userID and password, initializes points to zero for given user
@@ -100,3 +98,4 @@ def get_user_points(userName):
             for row in points:
                 userPoints = row[0]
     return {"pointsStatus": f"{userName} has {userPoints} points."}
+
