@@ -33,7 +33,7 @@ def create_user():
     userName = data["userName"]
     userID = hash(time.time())
     unhashedPass = data["password"]
-    salt = str(os.random(random.randint(0, 5)))
+    salt = string(os.random(random.randint(0, 5)))
     unhashedPass = (unhashedPass+salt)
     hashedPass = hashlib.sha256(bytes(unhashedPass)).hexdigest()
     with connection:
