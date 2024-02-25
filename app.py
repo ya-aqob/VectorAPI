@@ -94,7 +94,7 @@ def get_user_points(userName):
             userID = cursor.fetchall()
             for row in userID:
                 userID = row[0]
-            cursor.execute(FIND_USER_POINTS, (userID))
+            cursor.execute(FIND_USER_ID, (userName))
             points = cursor.fetchall()
             for row in points:
                 userPoints = row[0]
