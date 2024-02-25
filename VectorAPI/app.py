@@ -84,7 +84,8 @@ def login_verified():
         return {"verificationStatus": f"{userName} has successfully been verified."}
     else:
         return {"verificationStatus": f"User not successfully verified."}
-    
+
+
 @app.get("api/leaderboard/<str:userName>")
 def get_user_points(userName):
     with connection:
