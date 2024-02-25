@@ -20,7 +20,7 @@ if __name__ == '__main__':
     app.run(debug=False)
 
 #constant group
-CREATE_USER_TABLE = ("CREATE TABLE IF NOT EXISTS userinfo (username TEXT, userid SMALLINT, password TEXT, salt TEXT);") # creates new user table
+CREATE_USER_TABLE = ("CREATE TABLE IF NOT EXISTS userinfo (username TEXT, userid BIGINT, password TEXT, salt TEXT);") # creates new user table
 CREATE_LEADERBOARD_TABLE = ("CREATE TABLE IF NOT EXISTS leaderboard (id INT, points INT);") # creates new leaderboard table
 INSERT_USER_INFORMATION = ("INSERT INTO userinfo (username, userid, password) VALUES (%s, %s, %s);") # creates new user in user table
 INSERT_USER_LEADERBOARD = ("INSERT INTO leaderboard (id, points) VALUES (%d, %d)") # creates new user in leaderboard table
