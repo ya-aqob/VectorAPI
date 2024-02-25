@@ -10,7 +10,7 @@ import random
 #leaderboard sorting
 
 # path = placeholder sets path to .env file
-load_dotenv(dotenv_path=path, verbose=True) # loads .env file
+load_dotenv(verbose=True) # loads .env file
 url = os.getenv("DATABASE_URL") # gets url from .env file
 app = Flask(__name__) #starts flask app
 connection = psycopg2.connect(url) #creates database connection
