@@ -6,6 +6,7 @@ from dotenv import find_dotenv
 import hashlib, time
 import random
 
+
 #notes and to-do list
 #leaderboard sorting
 
@@ -38,6 +39,7 @@ def create_user():
     unhashedPass = data["password"]
     salt = str(os.urandom(random.randint(0, 5)))
     unhashedPass = (unhashedPass+salt)
+    unhashedPass = unhashedPass.encode('ascii', 'utf-8')
     hashedPass = hashlib.sha256(bytes(unhashedPass)).hexdigest()
     with connection:
         with connection.cursor() as cursor:
