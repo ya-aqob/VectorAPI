@@ -15,9 +15,6 @@ url = os.getenv("DATABASE_URL") # gets url from .env file
 app = Flask(__name__) #starts flask app
 connection = psycopg2.connect(url) #creates database connection
 
-if __name__ == '__main__':
-    app.run(debug=False)
-
 #constant group
 CREATE_USER_TABLE = ("CREATE TABLE IF NOT EXISTS userinfo (username TINYTEXT, userid INT, password CHAR, salt CHAR);") # creates new user table
 CREATE_LEADERBOARD_TABLE = ("CREATE TABLE IF NOT EXISTS leaderboard (id INT, points INT);") # creates new leaderboard table
