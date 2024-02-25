@@ -12,8 +12,11 @@ import random
 # path = placeholder sets path to .env file
 load_dotenv(verbose=True) # loads .env file
 url = os.getenv("DATABASE_URL") # gets url from .env file
-application = Flask(__name__) #starts flask app
+app = Flask(__name__) #starts flask app
 connection = psycopg2.connect(url) #creates database connection
+
+if __name__ == '__main__':
+    app.run(debug=False)
 
 #constant group
 CREATE_USER_TABLE = ("CREATE TABLE IF NOT EXISTS userinfo (username TINYTEXT, userid INT, password CHAR, salt CHAR);") # creates new user table
@@ -27,7 +30,7 @@ recycleConstant = 4 # points per item recycled
 disposalConstant = 3 # points per item disposed
 
 # creates user table and leaderboard table if none exists, adds new user with username and theoretically unique hashed userID and password, initializes points to zero for given user
-@application.post("/api/users")
+@app.post("/api/users")
 def create_user():
     data = request.get_json()
     userName = data["userName"]
@@ -45,7 +48,7 @@ def create_user():
     return {"userID": f"User {userName} created successfully.", "points": f"User {userName} has the ID {userID}."}
 
 # adds new points for a given user based on recycled items from client, the execute may or may not work
-@application.post("/api/leaderboard")
+@app.post("/api/leaderboard")
 def update_leaderboard():
     data = request.get_json()
     userName = data["userName"]
@@ -62,7 +65,7 @@ def update_leaderboard():
     return {"User": f"{userName} has earned "}
 
 # tests password attempt against hashed password and stored salt
-@application.post("/api/login")
+@app.post("/api/login")
 def login_verified():
     data = request.get_json()
     userName = data["userName"]
@@ -86,7 +89,7 @@ def login_verified():
         return {"verificationStatus": f"User not successfully verified."}
 
 
-@application.get("/api/leaderboard/<string:userName>")
+@app.get("/api/leaderboard/<string:userName>")
 def get_user_points(userName):
     with connection:
         with connection.cursor() as cursor:
