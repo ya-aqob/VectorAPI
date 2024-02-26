@@ -22,11 +22,11 @@ if __name__ == '__main__':
 #constant group
 CREATE_USER_TABLE = ("CREATE TABLE IF NOT EXISTS userinfo (username TEXT, userid BIGINT, password TEXT, salt TEXT);") # creates new user table
 CREATE_LEADERBOARD_TABLE = ("CREATE TABLE IF NOT EXISTS leaderboard (id INT, points INT);") # creates new leaderboard table
-INSERT_USER_INFORMATION = ("INSERT INTO userinfo (username, userid, password, salt) VALUES (%s, %d, %s, %s);") # creates new user in user table
+INSERT_USER_INFORMATION = ("INSERT INTO userinfo (username, userid, password, salt) VALUES (%s, %L, %s, %s);") # creates new user in user table
 INSERT_USER_LEADERBOARD = ("INSERT INTO leaderboard (id, points) VALUES (%d, %d)") # creates new user in leaderboard table
-UPDATE_NEW_POINTS = "UPDATE leaderboard SET points = {%d} WHERE id = {%d}; " # adds points for given user
-FIND_USER_ID = "SELECT userid from userinfo WHERE username = {%s}" # grabs userid based on what username is
-SELECT_PASSWORD_VERIFICATION = "SELECT password, salt from userinfo WHERE userid = {%d}" # grabs saved hashed password and salt
+UPDATE_NEW_POINTS = "UPDATE leaderboard SET points = (%d) WHERE id = (%d); " # adds points for given user
+FIND_USER_ID = "SELECT userid from userinfo WHERE username = (%s)" # grabs userid based on what username is
+SELECT_PASSWORD_VERIFICATION = "SELECT password, salt from userinfo WHERE userid = (%d)" # grabs saved hashed password and salt
 recycleConstant = 4 # points per item recycled
 disposalConstant = 3 # points per item disposed
 
