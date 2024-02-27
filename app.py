@@ -10,7 +10,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-key_path = r"recyclequest-key"
+key_path = r"/etc/secrets/recyclequest-key"
 sheet_id = '1H1-5p2iVq1dg0X31dbopoEbIa_gALT8je-Rom1XfIYM'
 creds = None
 if os.path.exists(key_path):
