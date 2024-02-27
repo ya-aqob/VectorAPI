@@ -40,7 +40,7 @@ def create_user(spreadsheet_id, range_name, value_input_option, _values):
 
 #creates user and initializes values to zero
 @app.post("/api/users")
-def create_user():
+def new_user():
     data = request.get_json()
     userName = data["userName"]
     points = 0
@@ -54,7 +54,7 @@ def create_user():
     unhashedPass = (unhashedPass+salt)
     unhashedPass = unhashedPass.encode('ascii', 'utf-8')
     hashedPass = hashlib.sha256(bytes(unhashedPass)).hexdigest()
-    create_user(spreadsheet_identifier, range_name, value_input_option, [[str(userName), str(userID), str(points), str(level), str(county), str(recycledItems), str(trashItems)]])
+    create_user(spreadsheet_identifier, range_name, value_input_option, [[str(userName), str(userID), str(hashedPass), str(salt), str(points), str(level), str(county), str(recycledItems), str(trashItems)]])
     return {"userID": f"User {userName} created successfully.", "points": f"User {userName} has the ID {userID}."}
  
 # adds new points for a given user based on recycled items from client, the execute may or may not work
