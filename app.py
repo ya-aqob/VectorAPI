@@ -47,7 +47,7 @@ def create_user():
     unhashedPass = (unhashedPass+salt)
     unhashedPass = unhashedPass.encode('ascii', 'utf-8')
     hashedPass = hashlib.sha256(bytes(unhashedPass)).hexdigest()
-    update_values(spreadsheet_identifier, range_name, value_input_option, [userName, userID])
+    update_values(spreadsheet_identifier, range_name, value_input_option, [str(userName), str(userID)])
     return {"userID": f"User {userName} created successfully.", "points": f"User {userName} has the ID {userID}."}
  
 # adds new points for a given user based on recycled items from client, the execute may or may not work
