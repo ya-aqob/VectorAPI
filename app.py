@@ -23,7 +23,7 @@ service = build("sheets", "v4", credentials=creds)
 spreadsheet_identifier = "1H1-5p2iVq1dg0X31dbopoEbIa_gALT8je-Rom1XfIYM"
 users = 1
 value_input_option = 'USER_ENTERED'
-range_name = f'A{users + 1}:Z{users+1}'
+range_name = 'A{}:Z{}'.format(users+1, users+1)
 
 app = Flask(__name__) #starts flask app
 
@@ -38,6 +38,7 @@ def create_user(spreadsheet_id, range_name, value_input_option, _values):
         body = {"values": values}
         result = (service.spreadsheets().values().update(spreadsheetId=spreadsheet_id, range=range_name, valueInputOption=value_input_option, body=body,).execute())
         print(f"{result.get('updatedCells')} cells updated.")
+        users += 1
         return result
     except HttpError as error:
         print(f"An error occurred: {error}")
