@@ -13,6 +13,7 @@ from googleapiclient.errors import HttpError
 # constants
 recycleConstant = 4
 trashConstant = 3
+users = 1
 
 key_path = r"/etc/secrets/recyclequest-key"
 sheet_id = '1H1-5p2iVq1dg0X31dbopoEbIa_gALT8je-Rom1XfIYM'
@@ -21,7 +22,6 @@ if os.path.exists(key_path):
     creds = service_account.Credentials.from_service_account_file(key_path, scopes=['https://www.googleapis.com/auth/spreadsheets'])
 service = build("sheets", "v4", credentials=creds)
 spreadsheet_identifier = "1H1-5p2iVq1dg0X31dbopoEbIa_gALT8je-Rom1XfIYM"
-users = 1
 value_input_option = 'USER_ENTERED'
 range_name = 'A{}:Z{}'.format(users+1, users+1)
 
@@ -38,6 +38,7 @@ def create_user(spreadsheet_id, range_name, value_input_option, _values):
         body = {"values": values}
         result = (service.spreadsheets().values().update(spreadsheetId=spreadsheet_id, range=range_name, valueInputOption=value_input_option, body=body,).execute())
         print(f"{result.get('updatedCells')} cells updated.")
+        global users 
         users += 1
         return result
     except HttpError as error:
