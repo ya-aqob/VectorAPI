@@ -35,7 +35,7 @@ def create_user(spreadsheet_id, range_name, value_input_option, _values):
     try:    
         values = _values
         resource = {
-            "majorDimensions": "ROWS",
+            "majorDimension": "ROWS",
             "values": values}
         result = (service.spreadsheets().values().append(spreadsheetId=spreadsheet_id, range=range_name, body=resource, valueInputOption=value_input_option).execute())
         print(f"{result.get('updatedCells')} cells updated.")
