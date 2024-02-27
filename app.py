@@ -48,7 +48,8 @@ def create_user():
     unhashedPass = unhashedPass.encode('ascii', 'utf-8')
     hashedPass = hashlib.sha256(bytes(unhashedPass)).hexdigest()
     update_values(spreadsheet_identifier, range_name, value_input_option, [userName, userID])
-
+    return {"userID": f"User {userName} created successfully.", "points": f"User {userName} has the ID {userID}."}
+ 
 # adds new points for a given user based on recycled items from client, the execute may or may not work
 #@app.post("/api/leaderboard")
 #def update_leaderboard():
