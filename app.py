@@ -22,7 +22,7 @@ if os.path.exists(key_path):
 service = build("sheets", "v4", credentials=creds)
 spreadsheet_identifier = "1H1-5p2iVq1dg0X31dbopoEbIa_gALT8je-Rom1XfIYM"
 value_input_option = 'USER_ENTERED'
-range_name = 'Sheet1!A:A'
+range_name = 'Sheet1!A:A';
 
 app = Flask(__name__) #starts flask app
 
@@ -36,9 +36,8 @@ def create_user(spreadsheet_id, range_name, value_input_option, _values):
         values = _values
         resource = {"majorDimensions": "ROWS",
             "values": values}
-        result = (service.spreadsheets().values().append(spreadsheetId=spreadsheet_id, range=range_name, body=resource, valueInputOption=value_input_option,).execute())
+        result = (service.spreadsheets().values().append(spreadsheetId=spreadsheet_id, range=range_name, valueInputOption=value_input_option, insertDataOption='INSERT_ROWS', body=resource).execute())
         print(f"{result.get('updatedCells')} cells updated.")
-        global users 
         return result
     except HttpError as error:
         print(f"An error occurred: {error}")
