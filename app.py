@@ -34,9 +34,8 @@ if __name__ == '__main__':
 def create_user(spreadsheet_id, range_name, value_input_option, _values):
     try:    
         values = _values
-        body = {"values": values}
         resource = {"majorDimensions": "ROWS",
-            "values": body}
+            "values": values}
         result = (service.spreadsheets().values().append(spreadsheetId=spreadsheet_id, range=range_name, body=resource, valueInputOption=value_input_option,).execute())
         print(f"{result.get('updatedCells')} cells updated.")
         global users 
