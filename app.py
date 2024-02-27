@@ -26,7 +26,9 @@ app = Flask(__name__) #starts flask app
 if __name__ == '__main__':
     app.run(debug=False)
 
-def update_values(spreadsheet_id, range_name, value_input_option, _values):
+
+# creates user
+def create_user(spreadsheet_id, range_name, value_input_option, _values):
     try:    
         values = _values
         body = {"values": values}
@@ -36,18 +38,23 @@ def update_values(spreadsheet_id, range_name, value_input_option, _values):
     except HttpError as error:
         print(f"An error occurred: {error}")
 
-# creates user table and leaderboard table if none exists, adds new user with username and theoretically unique hashed userID and password, initializes points to zero for given user
+#creates user and initializes values to zero
 @app.post("/api/users")
 def create_user():
     data = request.get_json()
     userName = data["userName"]
+    points = 0
+    level = 0
+    county = data["county"]
+    recycledItems = 0
+    trashItems=0
     userID = hash(time.time())
     unhashedPass = data["password"]
     salt = str(os.urandom(random.randint(0, 5)))
     unhashedPass = (unhashedPass+salt)
     unhashedPass = unhashedPass.encode('ascii', 'utf-8')
     hashedPass = hashlib.sha256(bytes(unhashedPass)).hexdigest()
-    update_values(spreadsheet_identifier, range_name, value_input_option, [[str(userName), str(userID)]])
+    create_user(spreadsheet_identifier, range_name, value_input_option, [[str(userName), str(userID), str(points), str(level), str(county), str(recycledItems), str(trashItems)]])
     return {"userID": f"User {userName} created successfully.", "points": f"User {userName} has the ID {userID}."}
  
 # adds new points for a given user based on recycled items from client, the execute may or may not work
