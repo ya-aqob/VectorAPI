@@ -13,7 +13,6 @@ from googleapiclient.errors import HttpError
 # constants
 recycleConstant = 4
 trashConstant = 3
-users = 1
 
 key_path = r"/etc/secrets/recyclequest-key"
 sheet_id = '1H1-5p2iVq1dg0X31dbopoEbIa_gALT8je-Rom1XfIYM'
@@ -23,7 +22,7 @@ if os.path.exists(key_path):
 service = build("sheets", "v4", credentials=creds)
 spreadsheet_identifier = "1H1-5p2iVq1dg0X31dbopoEbIa_gALT8je-Rom1XfIYM"
 value_input_option = 'USER_ENTERED'
-range_name = 'A{}:Z{}'.format(users+1, users+1)
+range_name = 'Sheet1!A:A'
 
 app = Flask(__name__) #starts flask app
 
@@ -36,10 +35,11 @@ def create_user(spreadsheet_id, range_name, value_input_option, _values):
     try:    
         values = _values
         body = {"values": values}
-        result = (service.spreadsheets().values().update(spreadsheetId=spreadsheet_id, range=range_name, valueInputOption=value_input_option, body=body,).execute())
+        resource = {"majorDimensions": "ROWS",
+            "values": body}
+        result = (service.spreadsheets().values().append(spreadsheetId=spreadsheet_id, range=range_name, body=resource, valueInputOption=value_input_option,).execute())
         print(f"{result.get('updatedCells')} cells updated.")
         global users 
-        users += 1
         return result
     except HttpError as error:
         print(f"An error occurred: {error}")
