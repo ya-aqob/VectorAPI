@@ -13,6 +13,7 @@ from googleapiclient.errors import HttpError
 # constants
 recycleConstant = 4
 trashConstant = 3
+levelPoints = [5, 10, 25, 50, 75, 100, 105]
 
 key_path = r"/etc/secrets/recyclequest-key"
 sheet_id = '1H1-5p2iVq1dg0X31dbopoEbIa_gALT8je-Rom1XfIYM'
@@ -54,6 +55,7 @@ def update(values, spreadsheet_id, range_name):
         return {'success': "Updated Successful"}
     return {'success': "Updated Failed"}
 
+# used as sort key for leaderboard
 def value_getter(item):
     return item[1]
 
@@ -88,13 +90,24 @@ def update_leaderboard():
     values = result.get('values',[])
     for line in values:
         if line[0] == userName:
+            userLevel = line[5]
             line[4] = line[4] + newPoints
+            totalPoints = line[4]
             line[7] = line[7] + itemsRecycled
-            line[8] = line[8] + itemsDisposed 
+            line[8] = line[8] + itemsDisposed
+            for i in range(0, len(levelPoints)):
+                if levelPoints[userLevel+i] > totalPoints:
+                    break
+                elif levelPoints[userLevel+i] == totalPoints:
+                    line[5] = userLevel+i
+                else:
+                    userLevel += 1
+                    continue
+            line[5] = userLevel
     update(values=values, spreadsheet_id=spreadsheet_identifier, range_name=range_name)
     return {"update": f"User {userName}'s points have been updated. {itemsRecycled}, {itemsDisposed}, {newPoints}"}
 
-# gets user information
+# gets user information for single user
 @app.get("/api/profile/<string:userName>")
 def user_information(userName):
     userName = userName
@@ -109,6 +122,7 @@ def user_information(userName):
             userTrash = line[8]
     return{"username": userName, "userPoints": userPoints, "userLevel": userLevel, "userCounty": userCounty, "userRecycle": userRecycle, "userTrash": userTrash}
 
+# gets leaderboard data and returns it as set of tuples with username and points
 @app.get("/api/leaderboard")
 def get_leaderboard():
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_identifier, range=range_name, valueRenderOption="UNFORMATTED_VALUE").execute()
