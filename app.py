@@ -22,8 +22,8 @@ if os.path.exists(key_path):
 service = build("sheets", "v4", credentials=creds)
 spreadsheet_identifier = "1H1-5p2iVq1dg0X31dbopoEbIa_gALT8je-Rom1XfIYM"
 value_input_option = 'USER_ENTERED'
-range_name = 'Sheet1!A:A';
-userID_range = 'Sheet!B:B';
+range_name = 'Sheet1!A:Z'
+userID_range = 'Sheet!B:B'
 
 app = Flask(__name__) #starts flask app
 
