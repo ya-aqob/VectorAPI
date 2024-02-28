@@ -89,6 +89,7 @@ def update_leaderboard():
             line[7] = line[7] + itemsRecycled
             line[8] = line[8] + itemsDisposed 
     update(values=values, spreadsheet_id=spreadsheet_identifier, range_name=range_name)
+    return {"update": f"User {userName}'s points have been updated."}
 
 # tests password attempt against hashed password and stored salt
 #@app.post("/api/login")
