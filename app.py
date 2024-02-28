@@ -54,6 +54,8 @@ def update(values, spreadsheet_id, range_name):
         return {'success': "Updated Successful"}
     return {'success': "Updated Failed"}
 
+# gathers user information
+
 #creates user and initializes values to zero
 @app.post("/api/users")
 def new_user():
@@ -91,14 +93,20 @@ def update_leaderboard():
     update(values=values, spreadsheet_id=spreadsheet_identifier, range_name=range_name)
     return {"update": f"User {userName}'s points have been updated. {itemsRecycled}, {itemsDisposed}, {newPoints}"}
 
-# tests password attempt against hashed password and stored salt
-#@app.post("/api/login")
-#def login_verified():
- #   data = request.get_json()
-  #  userName = data["userName"]
-   # passAttempt = data["passwordAttempt"]
-    #hashPassAttempt = passAttempt + salt
-    #hashPassAttempt = hashlib.sha256(bytes(hashPassAttempt))
+# gets user information
+@app.get("/api/leaderboard/<string:userName>")
+def user_information(userName):
+    userName = userName
+    result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_identifier, range=range_name, valueRenderOption="UNFORMATTED_VALUE").execute()
+    values = result.get('values',[])
+    for line in values:
+        if line[0] == userName:
+            userPoints = line[4]
+            userLevel = line[5]
+            userCounty = line[6]
+            userRecycle = line[7]
+            userTrash = line[8]
+    return{"username": userName, "userPoints": userPoints, "userLevel": userLevel, "userCounty": userCounty, "userRecycle": userRecycle, "userTrash": userTrash}
 
 
 #@app.get("/api/leaderboard/<string:userName>")
