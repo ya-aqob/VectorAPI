@@ -78,8 +78,8 @@ def new_user():
 def update_leaderboard():
     data = request.get_json()
     userName = data["userName"]
-    itemsRecycled = data["recycledItems"]
-    itemsDisposed = data["disposedItems"]
+    itemsRecycled = int(data["recycledItems"])
+    itemsDisposed = int(data["disposedItems"])
     newPoints = recycleConstant * itemsRecycled + trashConstant * itemsDisposed
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_identifier, range=range_name, valueRenderOption="UNFORMATTED_VALUE").execute()
     values = result.get('values',[])
