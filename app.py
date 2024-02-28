@@ -23,6 +23,7 @@ service = build("sheets", "v4", credentials=creds)
 spreadsheet_identifier = "1H1-5p2iVq1dg0X31dbopoEbIa_gALT8je-Rom1XfIYM"
 value_input_option = 'USER_ENTERED'
 range_name = 'Sheet1!A:A';
+userID_range = 'Sheet!B:B';
 
 app = Flask(__name__) #starts flask app
 
@@ -42,7 +43,6 @@ def create_user(spreadsheet_id, range_name, value_input_option, _values):
         return result
     except HttpError as error:
         print(f"An error occurred: {error}")
-
 
 #creates user and initializes values to zero
 @app.post("/api/users")
@@ -71,7 +71,15 @@ def update_leaderboard():
     itemsRecycled = data["recycledItems"]
     itemsDisposed = data["disposedItems"]
     newPoints = recycleConstant * itemsRecycled + trashConstant * itemsDisposed
-
+    values = service.spreadsheets().get(spreadsheetId=spreadsheet_identifier, range=range_name,).execute().get('values',[])
+    for line in values:
+        if line[0] == userName:
+            line[4] == line[4] + newPoints
+            line[7] == line[7] + itemsRecycled
+            line[8] == line[8] + itemsDisposed 
+            return {"success": f"User {userName}'s points successfully updated."}
+        else:
+            return {"error": f"User {userName} not found or points not able to be added."}
 
 
 # tests password attempt against hashed password and stored salt
