@@ -85,9 +85,9 @@ def update_leaderboard():
     values = result.get('values',[])
     for line in values:
         if line[0] == userName:
-            line[4] = line[4] + newPoints
-            line[7] = line[7] + itemsRecycled
-            line[8] = line[8] + itemsDisposed 
+            line[4] = int(line[4]) + newPoints
+            line[7] = int(line[7]) + itemsRecycled
+            line[8] = int(line[8]) + itemsDisposed 
     update(values=values, spreadsheet_id=spreadsheet_identifier, range_name=range_name)
     return {"update": f"User {userName}'s points have been updated. {itemsRecycled}, {itemsDisposed}, {newPoints}"}
 
