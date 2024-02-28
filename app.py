@@ -13,7 +13,7 @@ from googleapiclient.errors import HttpError
 # constants
 recycleConstant = 4
 trashConstant = 3
-levelPoints = [5, 10, 25, 50, 75, 100, 105]
+levelPoints = [5, 10, 25, 50, 75, 100, 105, 10000]
 
 key_path = r"/etc/secrets/recyclequest-key"
 sheet_id = '1H1-5p2iVq1dg0X31dbopoEbIa_gALT8je-Rom1XfIYM'
