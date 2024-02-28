@@ -103,7 +103,7 @@ def update_leaderboard():
                 else:
                     userLevel += 1
                     continue
-            line[5] = userLevel
+            line[5] = userLevel + 1
     update(values=values, spreadsheet_id=spreadsheet_identifier, range_name=range_name)
     return {"update": f"User {userName}'s points have been updated. {itemsRecycled}, {itemsDisposed}, {newPoints}"}
 
