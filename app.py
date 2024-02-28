@@ -51,8 +51,8 @@ def update(values, spreadsheet_id, range_name):
     }
     result = service.spreadsheets().values.update(spreadsheetId=spreadsheet_id, range=range_name, valueInputOption='USER_ENTERED', body=body).execute()
     if str(result.get('updatedCells')) != 0:
-        return True
-    return False
+        return {'success': "Updated Successful"}
+    return {'success': "Updated Failed"}
 
 #creates user and initializes values to zero
 @app.post("/api/users")
@@ -85,10 +85,9 @@ def update_leaderboard():
     values = result.get('values',[])
     for line in values:
         if line[0] == userName:
-            line[4] == line[4] + newPoints
-            line[7] == line[7] + itemsRecycled
-            line[8] == line[8] + itemsDisposed 
-            return {"success": f"User {userName}'s points successfully updated."}
+            line[4] = line[4] + newPoints
+            line[7] = line[7] + itemsRecycled
+            line[8] = line[8] + itemsDisposed 
     update(values=values, spreadsheet_id=spreadsheet_identifier, range_name=range_name)
 
 # tests password attempt against hashed password and stored salt
