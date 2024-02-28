@@ -95,7 +95,7 @@ def update_leaderboard():
             totalPoints = line[4]
             line[7] = line[7] + itemsRecycled
             line[8] = line[8] + itemsDisposed
-            for i in range(0, len(levelPoints)):
+            for i in range(0, len(levelPoints) - 1):
                 if levelPoints[userLevel+i] > totalPoints:
                     break
                 elif levelPoints[userLevel+i] == totalPoints:
