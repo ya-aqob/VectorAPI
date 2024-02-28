@@ -73,15 +73,14 @@ def update_leaderboard():
     newPoints = recycleConstant * itemsRecycled + trashConstant * itemsDisposed
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_identifier, range=range_name).execute()
     values = result.get('values',[])
-    
     for line in values:
         if line[0] == userName:
             line[4] == line[4] + newPoints
             line[7] == line[7] + itemsRecycled
             line[8] == line[8] + itemsDisposed 
             return {"success": f"User {userName}'s points successfully updated."}
-        else:
-            return {"error": f"User {userName} not found or points not able to be added."}
+
+
 
 
 # tests password attempt against hashed password and stored salt
