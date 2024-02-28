@@ -95,11 +95,11 @@ def update_leaderboard():
             totalPoints = line[4]
             line[7] = line[7] + itemsRecycled
             line[8] = line[8] + itemsDisposed
-            for i in range(0, len(levelPoints) - 1):
-                if levelPoints[userLevel+i] > totalPoints:
+            for i in range(0, len(levelPoints)):
+                if levelPoints[userLevel+1] > totalPoints:
                     break
-                elif levelPoints[userLevel+i] == totalPoints:
-                    line[5] = userLevel+i
+                elif levelPoints[userLevel+1] == totalPoints:
+                    line[5] = userLevel + 1
                 else:
                     userLevel += 1
                     continue
