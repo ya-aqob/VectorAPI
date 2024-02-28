@@ -44,6 +44,16 @@ def create_user(spreadsheet_id, range_name, value_input_option, _values):
     except HttpError as error:
         print(f"An error occurred: {error}")
 
+# update
+def update(values, spreadsheet_id, range_name):
+    body = {
+        'values': values
+    }
+    result = service.spreadsheets().values.update(spreadsheetId=spreadsheet_id, range=range_name, valueInputOption='USER_ENTERED', body=body).execute()
+    if str(result.get('updatedCells')) != 0:
+        return True
+    return False
+
 #creates user and initializes values to zero
 @app.post("/api/users")
 def new_user():
@@ -79,8 +89,6 @@ def update_leaderboard():
             line[7] == line[7] + itemsRecycled
             line[8] == line[8] + itemsDisposed 
             return {"success": f"User {userName}'s points successfully updated."}
-
-
 
 
 # tests password attempt against hashed password and stored salt
