@@ -49,7 +49,7 @@ def update(values, spreadsheet_id, range_name):
     body = {
         'values': values
     }
-    result = service.spreadsheets().values.update(spreadsheetId=spreadsheet_id, range=range_name, valueInputOption='USER_ENTERED', body=body).execute()
+    result = service.spreadsheets().values().update(spreadsheetId=spreadsheet_id, range=range_name, valueInputOption='USER_ENTERED', body=body).execute()
     if str(result.get('updatedCells')) != 0:
         return {'success': "Updated Successful"}
     return {'success': "Updated Failed"}
