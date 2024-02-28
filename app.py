@@ -31,7 +31,7 @@ if __name__ == '__main__':
     app.run(debug=False)
 
 
-# creates user
+# creates new user
 def create_user(spreadsheet_id, range_name, value_input_option, _values):
     try:    
         values = _values
@@ -44,7 +44,7 @@ def create_user(spreadsheet_id, range_name, value_input_option, _values):
     except HttpError as error:
         print(f"An error occurred: {error}")
 
-# update
+# updates user information
 def update(values, spreadsheet_id, range_name):
     body = {
         'values': values
@@ -54,7 +54,8 @@ def update(values, spreadsheet_id, range_name):
         return {'success': "Updated Successful"}
     return {'success': "Updated Failed"}
 
-# gathers user information
+def value_getter(item):
+    return item[1]
 
 #creates user and initializes values to zero
 @app.post("/api/users")
@@ -62,7 +63,7 @@ def new_user():
     data = request.get_json()
     userName = data["userName"]
     points = 0
-    level = 0
+    level = 1
     county = data["county"]
     recycledItems = 0
     trashItems=0
@@ -94,7 +95,7 @@ def update_leaderboard():
     return {"update": f"User {userName}'s points have been updated. {itemsRecycled}, {itemsDisposed}, {newPoints}"}
 
 # gets user information
-@app.get("/api/leaderboard/<string:userName>")
+@app.get("/api/profile/<string:userName>")
 def user_information(userName):
     userName = userName
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_identifier, range=range_name, valueRenderOption="UNFORMATTED_VALUE").execute()
@@ -108,7 +109,12 @@ def user_information(userName):
             userTrash = line[8]
     return{"username": userName, "userPoints": userPoints, "userLevel": userLevel, "userCounty": userCounty, "userRecycle": userRecycle, "userTrash": userTrash}
 
-
-#@app.get("/api/leaderboard/<string:userName>")
-#def get_user_points():
-
+@app.get("/api/leaderboard")
+def get_leaderboard():
+    result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_identifier, range=range_name, valueRenderOption="UNFORMATTED_VALUE").execute()
+    values = result.get('values',[])
+    unsortedLB = {}
+    for line in values:
+        unsortedLB[line[0]] = line[4]
+    sortedLB = sorted(unsortedLB.items(), key=lambda item: item[1], reverse=True)
+    return {"sortedLeaderboard": sortedLB}
