@@ -71,7 +71,7 @@ def update_leaderboard():
     itemsRecycled = data["recycledItems"]
     itemsDisposed = data["disposedItems"]
     newPoints = recycleConstant * itemsRecycled + trashConstant * itemsDisposed
-    values = service.spreadsheets().get(spreadsheetId=spreadsheet_identifier, range=range_name,).execute().get('values',[])
+    values = service.spreadsheets().get(spreadsheetId=spreadsheet_identifier, range=range_name).execute().get('values',[])
     for line in values:
         if line[0] == userName:
             line[4] == line[4] + newPoints
