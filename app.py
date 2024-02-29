@@ -144,7 +144,20 @@ def login_verification():
     testPassword = hashlib.sha256(bytes(testPassword)).hexdigest()
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_identifier, range=range_name, valueRenderOption="UNFORMATTED_VALUE").execute()
     values = result.get('values',[])
+    returnCheck = 0
     for line in values:
         if line[0] == userName:
             realPassword = line[2]
             if realPassword == testPassword:
+                returnCheck = 1
+                return {"loginStatus": "1"}
+            else:
+                returnCheck = 1
+                return {"loginStatus": "0"}
+    if returnCheck != 1:
+        return {"loginStatus": "0", "error": "An error has occurred"}
+            
+            
+    
+                        
+    
