@@ -68,6 +68,7 @@ def new_user():
     points = 0
     level = 1
     county = data["county"]
+    displayName = data["displayName"]
     recycledItems = 0
     trashItems=0
     userID = hash(time.time())
@@ -76,7 +77,7 @@ def new_user():
     unhashedPass = (unhashedPass+salt)
     unhashedPass = unhashedPass.encode('ascii', 'utf-8')
     hashedPass = hashlib.sha256(bytes(unhashedPass)).hexdigest()
-    create_user(spreadsheet_identifier, range_name, value_input_option, [[str(userName), str(userID), str(hashedPass), str(salt), str(points), str(level), str(county), str(recycledItems), str(trashItems)]])
+    create_user(spreadsheet_identifier, range_name, value_input_option, [[str(userName), str(userID), str(hashedPass), str(salt), str(points), str(level), str(county), str(recycledItems), str(trashItems),str(displayName)]])
     return {"userID": f"User {userName} created successfully.", "points": f"User {userName} has the ID {userID}."}
  
 #adds new points for a given user based on recycled items from client
