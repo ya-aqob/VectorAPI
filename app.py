@@ -88,6 +88,7 @@ def update_leaderboard():
     itemsRecycled = int(data["recycledItems"])
     itemsDisposed = int(data["disposedItems"])
     triviaPoints = int(data["triviaCompletion"])
+    questPoints = int(data["questPoints"])
     newPoints = recycleConstant * itemsRecycled + trashConstant * itemsDisposed + triviaConstant * triviaPoints
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_identifier, range=range_name, valueRenderOption="UNFORMATTED_VALUE").execute()
     values = result.get('values',[])
@@ -98,6 +99,8 @@ def update_leaderboard():
             totalPoints = line[4]
             line[7] = line[7] + itemsRecycled
             line[8] = line[8] + itemsDisposed
+            line[10] = line[10] + 1
+            line[11] = line[11] + 1
             for i in range(0, len(levelPoints)):
                 if levelPoints[userLevel+1] > totalPoints:
                     break
