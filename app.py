@@ -13,6 +13,7 @@ from googleapiclient.errors import HttpError
 # constants
 recycleConstant = 4
 trashConstant = 3
+triviaConstant = 8
 levelPoints = [5, 10, 25, 50, 75, 100, 105, 10000, 10000]
 
 key_path = r"/etc/secrets/recyclequest-key"
@@ -85,7 +86,8 @@ def update_leaderboard():
     userName = data["userName"]
     itemsRecycled = int(data["recycledItems"])
     itemsDisposed = int(data["disposedItems"])
-    newPoints = recycleConstant * itemsRecycled + trashConstant * itemsDisposed
+    triviaPoints = int(data["triviaCompletion"])
+    newPoints = recycleConstant * itemsRecycled + trashConstant * itemsDisposed + triviaConstant * triviaPoints
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_identifier, range=range_name, valueRenderOption="UNFORMATTED_VALUE").execute()
     values = result.get('values',[])
     for line in values:
@@ -132,3 +134,17 @@ def get_leaderboard():
         unsortedLB[line[0]] = line[4]
     sortedLB = sorted(unsortedLB.items(), key=lambda item: item[1], reverse=True)
     return {"sortedLeaderboard": sortedLB}
+
+@app.post("/api/login")
+def login_verification():
+    data = request.get_json()
+    userName = data["userName"]
+    testPassword = data["passwordAttempt"]
+    testPassword = testPassword.encode('ascii', 'utf-8')
+    testPassword = hashlib.sha256(bytes(testPassword)).hexdigest()
+    result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_identifier, range=range_name, valueRenderOption="UNFORMATTED_VALUE").execute()
+    values = result.get('values',[])
+    for line in values:
+        if line[0] == userName:
+            realPassword = line[2]
+            if realPassword == testPassword:
