@@ -25,6 +25,7 @@ service = build("sheets", "v4", credentials=creds)
 spreadsheet_identifier = "1H1-5p2iVq1dg0X31dbopoEbIa_gALT8je-Rom1XfIYM"
 value_input_option = 'USER_ENTERED'
 range_name = 'Sheet1!A2:Z'
+pointsRange = 'PointLog!A2:Z'
 userID_range = 'Sheet!B:B'
 
 app = Flask(__name__) #starts flask app
@@ -55,6 +56,15 @@ def update(values, spreadsheet_id, range_name):
     if str(result.get('updatedCells')) != 0:
         return {'success': "Updated Successful"}
     return {'success': "Updated Failed"}
+
+# creates log for points
+def pointLog(spreadsheet_id, range_name, _values):
+    values = _values
+    resource = {
+        "majorDimension": "ROWS",
+            "values": values}
+    result = (service.spreadsheets().values().append(spreadsheetId=spreadsheet_id, range=range_name, body=resource, valueInputOption=value_input_option).execute())
+    return result
 
 # used as sort key for leaderboard
 def value_getter(item):
@@ -111,6 +121,9 @@ def update_leaderboard():
                     continue
             line[5] = userLevel + 1
     update(values=values, spreadsheet_id=spreadsheet_identifier, range_name=range_name)
+    values = time.strftime("%d %B %H:%M").split()
+    values.insert(0, userName)
+    pointLog(spreadsheet_identifier, pointsRange, [values])
     return {"update": f"User {userName}'s points have been updated. {itemsRecycled}, {itemsDisposed}, {newPoints}"}
 
 # gets user information for single user
@@ -160,7 +173,6 @@ def login_verification():
                 return {"loginStatus": "0"}
     if returnCheck != 1:
         return {"loginStatus": "0", "error": "An error has occurred"}
-            
             
     
                         
