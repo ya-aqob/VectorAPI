@@ -13,7 +13,6 @@ from googleapiclient.errors import HttpError
 # constants
 recycleConstant = 4
 trashConstant = 3
-triviaConstant = 8
 levelPoints = [5, 10, 25, 50, 75, 100, 105, 10000, 10000]
 
 key_path = r"/etc/secrets/recyclequest-key"
@@ -152,6 +151,7 @@ def get_leaderboard():
     sortedLB = sorted(unsortedLB.items(), key=lambda item: item[1], reverse=True)
     return {"sortedLeaderboard": sortedLB}
 
+
 @app.post("/api/login")
 def login_verification():
     data = request.get_json()
@@ -173,7 +173,4 @@ def login_verification():
                 return {"loginStatus": "0"}
     if returnCheck != 1:
         return {"loginStatus": "0", "error": "An error has occurred"}
-            
-    
-                        
-    
+
