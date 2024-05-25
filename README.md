@@ -8,8 +8,12 @@ Routes:
 
 POST
 /api/users
--takes userName, password, displayName, and county as inputs
--creates new user, initializes stuff
+
+Inputs:
+userName, password, displayName, county
+
+Processes:
+creates and initializes new user account
 
 Response Body:
 userID: {userName} created successfully, points: User {userName} has the ID {userID}
@@ -18,8 +22,10 @@ userID: {userName} created successfully, points: User {userName} has the ID {use
 
 POST
 /api/points
--takes UserName, recycledItems, disposedItems, triviaCompletion, questPoints
--updates points, calculates new level if applicable, records time and commits to log
+
+Inputs: UserName, recycledItems, disposedItems, triviaCompletion, questPoints
+
+Processes: updates points, calculates new level if applicable, records time and commits to log
 
 Response Body (will be fixed soon TM):
 update: User {userName}'s points have been updated. {itemsRecycled}, {itemsDisposed}, {newPoints}
@@ -28,17 +34,23 @@ update: User {userName}'s points have been updated. {itemsRecycled}, {itemsDispo
 
 POST
 /api/login
--takes userName and passwordAttempt as input
+
+Inputs: userName, passwordAttempt
+
+Processes: Hashes passwordAttempt, checks hashed attempt against hashed real password
 
 Response Body:
 "loginStatus": loginStatus
-loginStatus = 0 or 1, 0 == failure, 1 == success
+loginStatus = 0 or 1
 
 -------------------------------------------------------------------------------------
 
 GET
 /api/profile/<string:userName>
--takes username from http route
+
+Inputs: username via route
+
+Processes: Fetches user information from DB
 
 Response Body:
 "username": userName, "userPoints": userPoints, "userLevel": userLevel, "userCounty": userCounty, "userRecycle": userRecycle, "userTrash": userTrash
@@ -47,16 +59,21 @@ Response Body:
 
 GET
 /api/leaderboard
--sorts leaderboard
 
-Response Body (its a list of tuples i think??):
+Processes: sorts leaderboard by points
+
+Response Body:
 sortedLeaderboard: sortedLB
 
+sortedLB = list of nested tuples
 -------------------------------------------------------------------------------------
 
 GET
 /api/progress/<string:userName>
--takes username from http route
+
+Inputs: userName via route
+
+Processes: fetches each individual commit with timestamp
 
 Response Body:
 "commits": {commit0: {"day": day, "month": month, "points": points, "weekday": weekday abbreviated, "year": year}, commitn: {"day": day, "month": month, "points": points, "weekday": weekday abbreviated, "year": year}}
