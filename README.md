@@ -1,6 +1,6 @@
 VectorAPI
 
-VectorAPI is an API built with Flask and GoogleAPI/SheetsAPI to manage data for the RecycleQuest app. It handles account creation, login authentication, point records with timestamps, leaderboard creation and sorting, and more.
+VectorAPI is an API built with Flask and connected to a GoogleAPI/SheetsAPI database to manage data for the RecycleQuest app. It handles account creation, login authentication, point records with timestamps, leaderboard creation and sorting, and more.
 
 -------------------------------------------------------------------------------------
 
