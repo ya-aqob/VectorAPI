@@ -65,7 +65,8 @@ Processes: sorts leaderboard by points
 Response Body:
 sortedLeaderboard: sortedLB
 
-sortedLB = list of nested tuples
+sortedLB = list of tuples
+
 -------------------------------------------------------------------------------------
 
 GET
